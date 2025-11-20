@@ -1,7 +1,6 @@
 pipeline{
     agent {
         label 'gcp_e2_standard_2'
-
     }
     // agent {
     //   docker {

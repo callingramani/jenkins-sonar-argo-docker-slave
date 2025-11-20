@@ -1,0 +1,33 @@
+pipeline{
+    agent {
+      docker {
+            image 'abhishekf5/maven-abhishek-docker-agent:v1'
+            args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+       }
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '76ab3bc1-0647-458c-a50a-5e99e78e3b6f', url: 'git@github.com:callingramani/jenkins-sonar-argo-docker-slave.git']])
+            }
+        }
+        stage('Build & Test') {
+            steps {
+                sh 'ls -la'
+                sh 'mvn clean package'
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube-server') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+            }
+        }
+    }
+}

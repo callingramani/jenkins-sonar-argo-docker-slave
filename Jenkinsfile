@@ -1,6 +1,8 @@
 pipeline{
     agent {
         label 'gcp_e2_standard_2'
+
+    }
     // agent {
     //   docker {
     //         image 'abhishekf5/maven-abhishek-docker-agent:v1'

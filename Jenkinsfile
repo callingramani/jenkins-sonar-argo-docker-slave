@@ -29,10 +29,16 @@ pipeline{
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying...'
+        stage('Build & Push Docker Image') {
+            environment {
+                DOCKER_IMAGE = "ankramani/argo-jenkins-sonar/my-spring-boot-app:${env.BUILD_NUMBER}"
+
             }
+            steps {
+                sh 'docker build -t $DOCKER_IMAGE .'
+                sh 'docker push $DOCKER_IMAGE'
+            }
+         }
         }
     }
 }

@@ -35,7 +35,7 @@ pipeline{
 
             }
             steps {
-                withDockerRegistry(credentialsId: 'jenkins-dockerhub-private') {
+                withDockerRegistry(credentialsId: 'jenkins-dockerhub-private', url: 'https://index.docker.io/v1/') {
                     sh '''
                         docker build -t $DOCKER_IMAGE .
                         docker push $DOCKER_IMAGE

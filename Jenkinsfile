@@ -34,9 +34,11 @@ pipeline{
                 DOCKER_IMAGE = "ankramani/argo-jenkins-sonar/my-spring-boot-app:${env.BUILD_NUMBER}"
 
             }
-            steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
-                sh 'docker push $DOCKER_IMAGE'
+            steps withDockerRegistry(credentialsId: 'jenkins-dockerhub-private') {
+                sh '''
+                    docker build -t $DOCKER_IMAGE .
+                    docker push $DOCKER_IMAGE
+                '''
             }
          }
         }

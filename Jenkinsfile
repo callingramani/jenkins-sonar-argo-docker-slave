@@ -31,7 +31,7 @@ pipeline{
         }
         stage('Build & Push Docker Image') {
             environment {
-                DOCKER_IMAGE = "ankramani/argo-jenkins-sonar/my-spring-boot-app:${env.BUILD_NUMBER}"
+                DOCKER_IMAGE = "ankramani/argo-jenkins-sonar:${env.BUILD_NUMBER}"
 
             }
             steps {

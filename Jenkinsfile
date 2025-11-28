@@ -1,13 +1,17 @@
 pipeline{
-    agent {
-        label 'gcp_e2_standard_2'
-    }
+    
     // agent {
     //   docker {
     //         image 'abhishekf5/maven-abhishek-docker-agent:v1'
     //         args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     //    }
     // }
+    agent{
+        dockerfile {
+            filename 'Dockerfile.agent'
+            dir '.'
+        }
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -32,7 +36,6 @@ pipeline{
         stage('Build & Push Docker Image') {
             environment {
                 DOCKER_IMAGE = "ankramani/argo-jenkins-sonar:${env.BUILD_NUMBER}"
-
             }
             steps {
                 withDockerRegistry(credentialsId: 'jenkins-dockerhub-private', url: 'https://index.docker.io/v1/') {

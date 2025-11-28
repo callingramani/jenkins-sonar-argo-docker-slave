@@ -1,10 +1,9 @@
 pipeline{
-    agent {
-      docker {
-            image 'abhishekf5/maven-abhishek-docker-agent:v1'
-            args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
-       }
+    
+    agent any{
+        label 'gcp_e2_standard_4'
     }
+
     stages {
         stage('Checkout') {
             steps {
@@ -22,7 +21,7 @@ pipeline{
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube-server') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar'
+                    sh 'mvn sonar:sonar'
                 }
             }
         }

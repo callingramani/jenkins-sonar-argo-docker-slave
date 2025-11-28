@@ -1,7 +1,7 @@
 pipeline{
     
     agent{
-        label 'gcp_e2_standard_4'
+        label 'gcp_e2_standard_2'
     }
 
     stages {

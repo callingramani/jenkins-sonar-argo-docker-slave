@@ -1,18 +1,10 @@
 pipeline{
-
-    agent{
-        dockerfile {
-            filename 'Dockerfile.agent'
-            dir '.'
+    agent {
+      docker {
+            image 'abhishekf5/maven-abhishek-docker-agent:v1'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
-        }
+       }
     }
-    // agent {
-    //   docker {
-    //         image 'maven:3.9.6-eclipse-temurin-17'
-    //         args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
-    //    }
-    // }
     stages {
         stage('Checkout') {
             steps {
@@ -30,7 +22,7 @@ pipeline{
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube-server') {
-                    sh 'mvn sonar:sonar'
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar'
                 }
             }
         }
